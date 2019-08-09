@@ -15,7 +15,12 @@ urlpatterns = [
     # User management
     path("users/", include("scute.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
-    # Your stuff: custom urls includes go here
+    # Expense Urls
+    path("expense/", include("expenses.urls")),
+    # API Urls
+    path("api/v1/", include("api.urls")),
+
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

@@ -1,7 +1,7 @@
 """
 Base settings to build other settings files upon.
 """
-
+import os
 import environ
 
 ROOT_DIR = (
@@ -71,12 +71,15 @@ THIRD_PARTY_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
+    "corsheaders",
     "rest_framework",
+    
 ]
 
 LOCAL_APPS = [
     "scute.users.apps.UsersConfig",
     "expenses",
+    "api",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -124,6 +127,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#middleware
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
@@ -141,7 +145,11 @@ STATIC_ROOT = str(ROOT_DIR("staticfiles"))
 # https://docs.djangoproject.com/en/dev/ref/settings/#static-url
 STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
-STATICFILES_DIRS = [str(APPS_DIR.path("static"))]
+FRONTEND_STATIC_DIR = os.path.join(ROOT_DIR, 'frontend', "build", "static")
+
+STATICFILES_DIRS = [str(APPS_DIR.path("static")), str(FRONTEND_STATIC_DIR)]
+
+
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
@@ -156,6 +164,7 @@ MEDIA_ROOT = str(APPS_DIR("media"))
 MEDIA_URL = "/media/"
 
 # TEMPLATES
+FRONTEND_DIR = os.path.join(ROOT_DIR, 'frontend')
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#templates
 TEMPLATES = [
@@ -163,7 +172,7 @@ TEMPLATES = [
         # https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-TEMPLATES-BACKEND
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         # https://docs.djangoproject.com/en/dev/ref/settings/#template-dirs
-        "DIRS": [str(APPS_DIR.path("templates"))],
+        "DIRS": [str(APPS_DIR.path("templates")), str(FRONTEND_DIR)],
         "OPTIONS": {
             # https://docs.djangoproject.com/en/dev/ref/settings/#template-loaders
             # https://docs.djangoproject.com/en/dev/ref/templates/api/#loader-types
@@ -262,5 +271,9 @@ ACCOUNT_ADAPTER = "scute.users.adapters.AccountAdapter"
 SOCIALACCOUNT_ADAPTER = "scute.users.adapters.SocialAccountAdapter"
 
 
-# Your stuff...
+# CORS CONFIG https://pypi.org/project/django-cors-headers/
 # ------------------------------------------------------------------------------
+CORS_ORIGIN_WHITELIST = [
+    "http://localhost:8000",
+    "http://127.0.0.1:8000"
+]
