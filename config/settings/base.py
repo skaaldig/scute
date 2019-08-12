@@ -191,6 +191,8 @@ TEMPLATES = [
                 "django.template.context_processors.static",
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
+
+                # context processor to load create-react-app hashed css/js files
                 "config.settings.context_processors.react_files"
             ],
         },
@@ -283,6 +285,7 @@ CORS_ORIGIN_WHITELIST = [
 # React Config
 REACT_BUILD_DIR = os.path.join(FRONTEND_DIR, "build")
 
+# Make React hashed files accessible in context_processor
 asset_json = os.path.join(REACT_BUILD_DIR, "asset-manifest.json")
 with open(asset_json) as f:
     data = json.load(f)

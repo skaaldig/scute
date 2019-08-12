@@ -29,7 +29,7 @@ class ObjectCodeSerializer(serializers.HyperlinkedModelSerializer):
 
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = models.ObjectCode
+        model = models.Category
         fields = "__all__"
 
 
