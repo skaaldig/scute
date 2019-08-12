@@ -1,14 +1,7 @@
-    <form action="" method="post">
-        {% csrf_token %}
-        <table>
-            {{ expense_form.as_table }}
-            {{ formset.as_table }}
-            <tr>
-                <td></td>
-                <td><input type="submit"></td>
-            </tr>
-        </table>
-    </form>
+{% extends 'base.html' %}
 
-    
-
+{% block content %}
+<noscript>You need to enable JavaScript to run this app.</noscript>
+<div id="root">
+</div>
+{% endblock %}

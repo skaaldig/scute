@@ -51,3 +51,4 @@ class ExpenseViewSet(viewsets.ModelViewSet):
     """ 
     queryset = models.Expense.objects.all()
     serializer_class = serializers.ExpenseSerializer
+

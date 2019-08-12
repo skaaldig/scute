@@ -2,12 +2,14 @@
 Base settings to build other settings files upon.
 """
 import os
+import json
 import environ
 
 ROOT_DIR = (
     environ.Path(__file__) - 3
 )  # (scute/config/settings/base.py - 3 = scute/)
 APPS_DIR = ROOT_DIR.path("scute")
+FRONTEND_DIR = os.path.join(ROOT_DIR, 'frontend')
 
 env = environ.Env()
 
@@ -164,7 +166,6 @@ MEDIA_ROOT = str(APPS_DIR("media"))
 MEDIA_URL = "/media/"
 
 # TEMPLATES
-FRONTEND_DIR = os.path.join(ROOT_DIR, 'frontend')
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#templates
 TEMPLATES = [
@@ -190,6 +191,7 @@ TEMPLATES = [
                 "django.template.context_processors.static",
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
+                "config.settings.context_processors.react_files"
             ],
         },
     }
@@ -277,3 +279,13 @@ CORS_ORIGIN_WHITELIST = [
     "http://localhost:8000",
     "http://127.0.0.1:8000"
 ]
+
+# React Config
+REACT_BUILD_DIR = os.path.join(FRONTEND_DIR, "build")
+
+asset_json = os.path.join(REACT_BUILD_DIR, "asset-manifest.json")
+with open(asset_json) as f:
+    data = json.load(f)
+
+REACT_CSS = data["files"]["main.css"].replace("static/", "")
+REACT_JS = data["files"]["main.js"].replace("static/", "")
